@@ -1,0 +1,38 @@
+[project]
+name = "basy"
+version = "0.0.1"
+description = "CLI Tool to easily manage scaffolding templates."
+readme = "README.md"
+requires-python = ">=3.11"
+license = {file = "LICENSE.txt"}
+keywords = ["project", "scaffolding"]
+authors = [
+  {name = "Pablo Takara", email = "pjt1991@gmail.com"}
+]
+
+
+dependencies = [
+  "click==8.1.3",
+  "pydantic==1.10.7",
+  "PyYAML==6.0",
+  "copier==7.2.0"
+]
+
+[project.optional-dependencies]
+dev = [
+  "mypy==1.2.0"
+]
+
+[project.scripts]
+basy = "cli:cli"
+
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+namespaces = true
+
+[tool.pyright]
+include = ["src"]
