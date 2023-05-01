@@ -1,11 +1,20 @@
+"""Define the CLI subcommand group `list`."""
+
+
 import typer
 
 app = typer.Typer(name="list")
 
 
+@app.callback(invoke_without_command=True, no_args_is_help=True)
+def list_help():
+    """List entities."""
+
+
 @app.command(name="templates")
 def list_templates(ctx: typer.Context):
-    templates = ctx.obj.list()
+    """List templates."""
+    templates = ctx.obj.to_list()
 
     # TODO: Change to use rich
     if len(templates) > 0:

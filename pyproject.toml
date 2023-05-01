@@ -3,7 +3,7 @@ name = "basy"
 version = "0.0.1"
 description = "CLI Tool to easily manage scaffolding templates."
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.8"
 license = {file = "LICENSE.txt"}
 keywords = ["project", "scaffolding"]
 authors = [
@@ -15,25 +15,46 @@ dependencies = [
   "pydantic==1.10.7",
   "PyYAML==6.0",
   "copier==7.2.0",
-  "typer[all]==0.7.0"
+  "typer[all]==0.7.0",
 ]
 
 [project.optional-dependencies]
 dev = [
-  "mypy==1.2.0"
+  "nox==2023.4.22",
+  "ruff==0.0.263",
+  "pytest==7.3.1",
+  "pytest-cov==4.0.0"
 ]
 
 [project.scripts]
-# basy = "cli:cli"
 basy = "cli:app"
 
 [build-system]
 requires = ["setuptools", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
 
+[tool.setuptools]
+zip-safe = false
+
 [tool.setuptools.packages.find]
 where = ["src"]
-namespaces = true
 
 [tool.pyright]
 include = ["src"]
+venvPath = "~/.pyenv/version"
+venv = "basy"
+
+[tool.ruff]
+select = ["E", "F", "I", "N", "C90", "D", "UP", "B", "A", "C4", "PT", "PTH", "SIM", "PL", "RUF"]
+format = "grouped"
+
+[tool.ruff.per-file-ignores]
+"__init__.py" = ["F401"]
+"src/cli/add_template.py" = ["PLR0913"]
+"src/models/template.py" = ["N805"]
+
+[tool.ruff.pydocstyle]
+convention = "google"
+
+[tool.ruff.flake8-bugbear]
+extend-immutable-calls = ["typer.Option"]
