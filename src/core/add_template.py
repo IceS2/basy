@@ -1,5 +1,6 @@
 # TODO: Think better how to actually structure this module.
 import copier
+import copier.cli
 import json
 from pathlib import Path
 from typing import Optional, Tuple

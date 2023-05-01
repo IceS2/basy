@@ -1,24 +1,15 @@
-import click
-
-from registry import Registry
+import typer
 
 
-@click.group(name="remove")
-def remove_entity():
-    pass
+app = typer.Typer(name="remove")
 
 
-@click.command(name="template")
-@click.option(
-    "-n", "--name",
-    type=str,
-    help="Name of the source to remove"
-)
-@click.pass_obj
+# TODO: Prompt with rich
+@app.command(name="template")
 def remove_template(
-        registry: Registry,
-        name: str):
-    registry.remove(name)
-
-
-remove_entity.add_command(remove_template)
+    ctx: typer.Context,
+    name: str = typer.Option(..., "--name", "-n", help="Name of the template to remove."),
+    ):
+    if name in ctx.obj.templates:
+        typer.confirm(f"Are you sure you want to delete the template {name}?", abort=True)
+    ctx.obj.remove(name)

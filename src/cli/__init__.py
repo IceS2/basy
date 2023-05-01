@@ -1,28 +1,23 @@
-import click
+import typer
 from pathlib import Path
-from typing import Optional
 
+from cli.add_template import app as add_group
+from cli.use_template import app as use_group
+from cli.remove_template import app as remove_group
+from cli.list_templates import app as list_group
 from registry import Registry
 
-from cli.list_templates import list_entity
-from cli.use_template import use_entity
-from cli.add_template import add_entity
-from cli.remove_template import remove_entity
+
+app = typer.Typer()
+app.add_typer(add_group, name="add")
+app.add_typer(list_group, name="list")
+app.add_typer(remove_group, name="remove")
+app.add_typer(use_group, name="use")
 
 
-@click.group()
-@click.option(
-    "-t", "--templates-file",
-    default=None,
-    help="Templates file path.",
-    type=click.Path(exists=True, path_type=Path)
-)
-@click.pass_context
-def cli(ctx: click.Context, templates_file: Optional[Path]):
+@app.callback(invoke_without_command=True, no_args_is_help=True)
+def entrypoint(
+    ctx: typer.Context,
+    templates_file: Path = typer.Option(None, "--templates-file", "-t", help="Templates file path.")
+    ):
     ctx.obj = Registry.from_templates_file(templates_file)
-
-
-cli.add_command(list_entity)
-cli.add_command(use_entity)
-cli.add_command(add_entity)
-cli.add_command(remove_entity)
